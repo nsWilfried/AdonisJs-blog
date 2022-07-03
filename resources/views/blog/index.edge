@@ -1,0 +1,32 @@
+@layout('layout/layout')
+
+@section('body')
+  
+    <div class="flex flex-col">
+      @each(post in posts)
+        @each(date in dates)
+        <div class="post">
+            <div class="post__title">
+                <span>
+                   <a href="{{route("BlogController.showPost", {
+                       id:post.id
+                   })}}"> {{post.title}}</a>
+                </span>
+
+                 @if(post.created_at != null)
+                    <span>
+                        {{date}}
+                    </span>
+                 @endif
+            </div>
+
+            <div class="post_description">
+                <span>
+                    {{post.description}}
+                </span>
+            </div>
+        </div>
+        @end
+      @end
+    </div>
+@endsection

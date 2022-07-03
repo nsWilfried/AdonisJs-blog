@@ -1,0 +1,42 @@
+@layout('layout/layout')
+
+@section('body')
+
+@if(post.thumbnail != null)
+<div>
+  <img src="/tmp/uploads/{{post.thumbnail}}" alt="{{post.title}}">
+</div>
+@endif
+<form action="" method="post" enctype="multipart/form-data">
+  @!component('components/form', {
+    name: 'Titre du poste', 
+    value: post.title, 
+    title: 'title', 
+    type: 'input'
+ })
+ @!component('components/flash', {
+   name: 'title'
+ })
+   @!component('components/form', {
+    name: 'Descrition du post', 
+    value: post.description, 
+    title: 'description', 
+    type: 'textarea'
+  })
+
+  @!component('components/form', {
+    name: 'Choisir une image', 
+    title: 'cover_image', 
+    type: 'file'
+  })
+
+  <div>
+    <button class="p-2 bg-black text-white" type="submit">
+      Envoyer
+    </button>
+  </div>
+</form>
+
+
+
+@endsection

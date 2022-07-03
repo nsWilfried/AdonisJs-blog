@@ -1,0 +1,20 @@
+<div>
+    <div>
+        <label for="{{title}}">{{name}}</label>
+    </div>
+
+    @if(type == 'textarea')
+        <textarea class="border border-solid border-black" name="{{title}}" id="{{title}}" >{{value}}</textarea>
+    @elseif(type == 'input')
+
+        <div>
+            <input class="border border-solid border-black p-1" type="text" name="{{title}}" value="{{flashMessages.get(`${title}`) || {{value}}}}">
+        </div>
+    @elseif (type =='file')
+        <div>
+            <input type="file" name="{{title}}" id="{{title}}">
+        </div>
+    @endif
+
+</div>
+
