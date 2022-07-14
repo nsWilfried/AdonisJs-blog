@@ -4,17 +4,30 @@
     </div>
 
     @if(type == 'textarea')
-        <textarea class="border border-solid border-black" name="{{title}}" id="{{title}}" >{{value}}</textarea>
+        <textarea class="border border-solid border-black" name="{{title}}" id="{{title}}" >{{value}}</textarea> 
+       
     @elseif(type == 'input')
 
         <div>
-            <input class="border border-solid border-black p-1" type="text" name="{{title}}" value="{{flashMessages.get(`${title}`) || {{value}}}}">
+            <input class="border border-solid border-black p-1" type="text" name="{{title}}" value="{{value}}" id="{{title}}">
         </div>
+
+    @elseif(type == 'password')
+        <div>
+            <input type="password" name="{{title}}" id="{{title}}">
+        </div>
+
+    @elseif(type=='checkbox')
+        <div>
+            <input type="checkbox" name="{{title}}" id="{{title}}">
+        </div>
+
+
     @elseif (type =='file')
         <div>
             <input type="file" name="{{title}}" id="{{title}}">
         </div>
-    @endif
+    @end
 
 </div>
 

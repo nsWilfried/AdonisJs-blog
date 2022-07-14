@@ -1,0 +1,40 @@
+@layout('layout/layout')
+
+@section('body')
+<div>
+
+    <form action="" method="post">
+        @!component('components/form', {
+            name: "Nom d'utilisateur:", 
+            title: 'username', 
+            type: 'input',
+            value:''
+        })
+        @!component('components/form', {
+            name: "Email:", 
+            title: 'email', 
+            type: 'input', 
+            value:''
+        })
+    
+        @!component('components/form', {
+        name: "Mot de passe:", 
+        title: 'password', 
+        type: 'password'
+        })
+    
+    
+        @!component('components/form', {
+            name: "Se souvenir de moi", 
+            title: 'checkbox', 
+            type: 'checkbox'
+        })
+    <div>
+        <button type="submit">
+            S'enregistrer
+        </button>
+    </div>
+    </form>
+      
+    </div>
+@end

@@ -3,7 +3,6 @@ import Database from '@ioc:Adonis/Lucid/Database'
 import Post from 'App/Models/Post'
 import moment from 'moment'
 import Application from '@ioc:Adonis/Core/Application'
-import schema from 'App/Validators/UpdateValidator'
 import UpdateValidator from 'App/Validators/UpdateValidator'
 
 export default class BlogController {
@@ -11,10 +10,14 @@ export default class BlogController {
     public async index({view}: HttpContextContract ) {
         const posts = await Database.from("posts")
         const postsCreatedDates: any = []
-
+        let i =0
         posts.forEach(post =>{
+            i++
             if(post.created_at)
-                postsCreatedDates.push(moment(post.created_at).fromNow())
+                postsCreatedDates.push({
+                    index: i,
+                    date:moment(post.created_at).fromNow()
+                })
         })
 
         return view.render("blog/index", {
@@ -41,9 +44,6 @@ export default class BlogController {
 
        await  post.merge(payload)
          await post.save()
-
-
-
 
 
        if(post.thumbnail != null){

@@ -20,6 +20,11 @@
 
 import Route from '@ioc:Adonis/Core/Route'
 Route.get("/posts/:id", "BlogController.showPost").as("show_post")
-Route.post("/posts/:id", "BlogController.update")
+Route.group(() => {
+    Route.post("/posts/:id", "BlogController.update")
+
+}).middleware('auth')
 Route.get('/', "BlogController.index").as('home')
 Route.get("/api", "BlogController.loadPosts").as("api")
+Route.get('/user/register', 'AuthController.goRegister').as('register')
+Route.post('/user/register', 'AuthController.register')

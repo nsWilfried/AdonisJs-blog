@@ -1,32 +1,61 @@
 @layout('layout/layout')
 
 @section('body')
-  
-    <div class="flex flex-col">
-      @each(post in posts)
-        @each(date in dates)
-        <div class="post">
-            <div class="post__title">
-                <span>
-                   <a href="{{route("BlogController.showPost", {
-                       id:post.id
-                   })}}"> {{post.title}}</a>
-                </span>
 
-                 @if(post.created_at != null)
-                    <span>
-                        {{date}}
-                    </span>
-                 @endif
-            </div>
 
-            <div class="post_description">
-                <span>
-                    {{post.description}}
-                </span>
+<div class="w-full flex h-screen  justify-center">
+    <div class=" w-2/4 h-full ">
+        <div class="flex flex-col m-2 ">
+            @each(post in posts)
+            <div class="post h-auto m-3 text-white flex md:flex-row sm:flex-col">
+
+                <div class="post__thumbnail p-3 w-auto h-auto flex justify-center items-center">
+                    <img style="width:300px;" src=" {{post.thumbnail}} " alt=" {{post.title}} " srcset="">
+                </div>
+
+                <div class="post__info p-3  w-2/4">
+                    <div class="post__title py-3 ">
+                        <span class="font-bold text-3xl">
+                            <a class="hover:text-blue-400" href=" {{route('BlogController.showPost', {id:post.id
+                                            })}} "> {{post.title}}</a>
+                        </span>
+                    </div>
+
+                    
+                    @each(date in dates)
+                        @if(date.index == post.id)
+                            <div  class="post__createdat py-3">
+                                <span class=" text-gray-400 ">
+                                    @if(post.created_at != null)
+                                    <span>
+                                        {{date.date}}
+                                    </span>
+                                    @endif
+                                </span>
+                            </div>
+                            
+                        @endif  
+                    @endeach
+
+                    <!-- post description --> 
+                    
+                    <div class="post_description py-3 ">
+                        <span>
+                            {{post.description}}
+                        </span>
+                    </div>
+
+                    <!-- lire en plus --> 
+                    <button class="w-32 rounded p-2 bg-green-400">
+                        <a  class="font-medium" href="{{route('BlogController.showPost', {id: post.id})}} ">Lire en plus</a>
+                    </button>
+                    
+                </div>
+
             </div>
+            @end
         </div>
-        @end
-      @end
     </div>
+</div>
+
 @endsection
