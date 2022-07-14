@@ -7,6 +7,12 @@ export default class AuthController {
 
         return view.render('auth/register')
     }
+
+
+    public async goLogin({view}: HttpContextContract){
+
+        return view.render('auth/login')
+    }
     
     public async register({request}:HttpContextContract) {
         return request.all()

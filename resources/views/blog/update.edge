@@ -2,41 +2,50 @@
 
 @section('body')
 
-@if(post.thumbnail != null)
-<div>
-  <img src="/tmp/uploads/{{post.thumbnail}}" alt="{{post.title}}">
-</div>
-@endif
-<form action="" method="post" enctype="multipart/form-data">
-  @!component('components/form', {
-    name: 'Titre du poste', 
-    value: post.title, 
-    title: 'title', 
-    type: 'input'
- })
- @!component('components/flash', {
-   name: 'title'
- })
-   @!component('components/form', {
-    name: 'Descrition du post', 
-    value: post.description, 
-    title: 'description', 
-    type: 'textarea'
-  })
+<div class="post w-full h-screen flex justify-center items-center">
+  <div class="w-1/2 bg-white h-full">
 
-  @!component('components/form', {
-    name: 'Choisir une image', 
-    title: 'cover_image', 
-    type: 'file'
-  })
+    <div class="post__thumbnail w-full h-64 flex justify-center items-center bg-orange-200">
+        @if(post.thumbnail != null)
+          <div class=" w-28 h-28  hover:cursor-pointer">
+            <img class="hover:border-slate-400 transition duration-300 hover:border-4" src="{{post.thumbnail}}" alt="{{post.title}}">
+          </div>
+      @endif
+    </div>
+    
+    <form action="" method="post" enctype="multipart/form-data">
+      @!component('components/form', {
+        name: 'Titre du poste', 
+        value: post.title, 
+        title: 'title', 
+        type: 'input'
+    })
+    @!component('components/flash', {
+      name: 'title'
+    })
+      @!component('components/form', {
+        name: 'Descrition du post', 
+        value: post.description, 
+        title: 'description', 
+        type: 'textarea'
+      })
 
-  <div>
-    <button class="p-2 bg-black text-white" type="submit">
-      Envoyer
-    </button>
+      @!component('components/form', {
+        name: 'Choisir une image', 
+        title: 'cover_image', 
+        type: 'file'
+      })
+
+      <div>
+        <button class="p-2 bg-black text-white" type="submit">
+          Envoyer
+        </button>
+      </div>
+    </form>
+
+
+
   </div>
-</form>
-
-
+</div>
 
 @endsection
