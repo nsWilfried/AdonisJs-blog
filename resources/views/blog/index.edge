@@ -16,26 +16,33 @@
                 <div class="post__info p-3  w-2/4">
                     <div class="post__title py-3 ">
                         <span class="font-bold text-3xl">
-                            <a class="hover:text-blue-400" href=" {{route('BlogController.showPost', {id:post.id
-                                            })}} "> {{post.title}}</a>
+                            <a class="hover:text-blue-400" href=" # "> {{post.title}}</a>
                         </span>
                     </div>
 
-                    
-                    @each(date in dates)
-                        @if(date.index == post.id)
-                            <div  class="post__createdat py-3">
-                                <span class=" text-gray-400 ">
-                                    @if(post.created_at != null)
-                                    <span>
-                                        {{date.date}}
+                    <div class="flex justify-between items-center py-3 ">
+                        @each(date in dates)
+                            @if(date.index == post.id)
+                                <div  class="post__createdat ">
+                                    <span class=" text-gray-400 ">
+                                        @if(post.createdAt != null)
+                                        <span>
+                                            {{date.date}}
+                                        </span>
+                                        @endif
                                     </span>
-                                    @endif
-                                </span>
-                            </div>
-                            
-                        @endif  
-                    @endeach
+                                </div>
+                                
+                            @endif  
+                        @endeach
+
+                        <div>
+                            <span class="text-gray-400 uppercase  font-medium ">
+                                {{post.user.username}}
+                            </span>
+                        </div>
+                    </div>
+                    
 
                     <!-- post description --> 
                     
@@ -45,10 +52,10 @@
                         </span>
                     </div>
 
-                    <!-- lire en plus --> 
+                    <!-- lire en plus  
                     <button class="w-32 rounded p-2 bg-green-400">
                         <a  class="font-medium" href="{{route('BlogController.showPost', {id: post.id})}} ">Lire en plus</a>
-                    </button>
+                    </button> -->
                     
                 </div>
 

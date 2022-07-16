@@ -10,17 +10,16 @@ export default class BlogController {
     public async index({view, request}: HttpContextContract ) {
         const page = request.input('page', 1)
         const limit = 1
-        const posts = await Database.from("posts").paginate(page, limit)
-        
+        const posts = await Post.query().preload("user").paginate(page,limit)
 
         const postsCreatedDates: any = []
         let i =0
         posts.forEach(post =>{
             i++
-            if(post.created_at)
+            if(post.createdAt)
                 postsCreatedDates.push({
                     index: i,
-                    date:moment(post.created_at).fromNow()
+                    date:moment(post.createdAt).fromNow()
                 })
         })
 
@@ -31,7 +30,7 @@ export default class BlogController {
     }
 
     public async loadPosts(){
-        return Database.from("posts")
+        return Post.query().preload('user')
     }
 
     public async showPost({params, view}:HttpContextContract){
