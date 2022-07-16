@@ -19,9 +19,11 @@
 */
 
 import Route from '@ioc:Adonis/Core/Route'
-Route.get("/posts/:id", "BlogController.showPost").as("show_post")
+Route.get("/posts/update/:id", "BlogController.showPost").as("update_post")
+Route.get("/posts/:id", "BlogController.getOnePost").as("show_post")
+
 Route.group(() => {
-    Route.post("/posts/:id", "BlogController.update")
+    Route.post("/posts/update/:id", "BlogController.update")
 
 }).middleware('auth')
 Route.get('/', "BlogController.index").as('home')
@@ -30,3 +32,5 @@ Route.get('/user/register', 'AuthController.goRegister').as('register')
 Route.post('/user/register', 'AuthController.register')
 Route.get('/contact', 'ContactController.index').as('contact')
 Route.get('/user/login', 'AuthController.goLogin').as('login')
+Route.get('/create/post', 'BlogController.createPostPage').as('createPost')
+

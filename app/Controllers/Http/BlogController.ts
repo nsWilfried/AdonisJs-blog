@@ -4,6 +4,7 @@ import Post from 'App/Models/Post'
 import moment from 'moment'
 import Application from '@ioc:Adonis/Core/Application'
 import UpdateValidator from 'App/Validators/UpdateValidator'
+import User from 'App/Models/User'
 
 export default class BlogController {
 
@@ -30,9 +31,20 @@ export default class BlogController {
     }
 
     public async loadPosts(){
-        return Post.query().preload('user')
+        return await Post.query().preload('user')
     }
 
+    public async loadUsers(){
+        return await User.query()
+    }
+
+    public async getOnePost({view, params}:HttpContextContract){
+        const post = await Post.findOrFail(params.id)
+        return view.render('blog/post', {post})
+    }
+    public async createPostPage({view}:HttpContextContract){
+        return view.render('blog/edit')
+    }
     public async showPost({params, view}:HttpContextContract){
         const post = await Post.findOrFail(params.id)
 

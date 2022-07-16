@@ -16,7 +16,7 @@
                 <div class="post__info p-3  w-2/4">
                     <div class="post__title py-3 ">
                         <span class="font-bold text-3xl">
-                            <a class="hover:text-blue-400" href=" # "> {{post.title}}</a>
+                            <a class="hover:text-blue-400" href=" {{route('BlogController.getOnePost', {id:post.id})}} "> {{post.title}}</a>
                         </span>
                     </div>
 
@@ -52,10 +52,12 @@
                         </span>
                     </div>
 
-                    <!-- lire en plus  
+                
+                    <!-- lire en plus  -->
+                    
                     <button class="w-32 rounded p-2 bg-green-400">
-                        <a  class="font-medium" href="{{route('BlogController.showPost', {id: post.id})}} ">Lire en plus</a>
-                    </button> -->
+                        <a  class="font-medium" href="{{route('BlogController.getOnePost', {id: post.id})}} ">Lire en plus</a>
+                    </button> 
                     
                 </div>
 
