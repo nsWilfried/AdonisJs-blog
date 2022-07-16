@@ -7,8 +7,12 @@ import UpdateValidator from 'App/Validators/UpdateValidator'
 
 export default class BlogController {
 
-    public async index({view}: HttpContextContract ) {
-        const posts = await Database.from("posts")
+    public async index({view, request}: HttpContextContract ) {
+        const page = request.input('page', 1)
+        const limit = 1
+        const posts = await Database.from("posts").paginate(page, limit)
+        
+
         const postsCreatedDates: any = []
         let i =0
         posts.forEach(post =>{

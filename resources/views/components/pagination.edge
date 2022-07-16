@@ -1,0 +1,15 @@
+<!-- This example requires Tailwind CSS v2.0+ -->
+<div class="flex items-center justify-center p-2">
+        <nav class="relative z-0 inline-flex rounded-md shadow-sm -space-x-px" aria-label="Pagination">
+        
+            @each(anchor in posts.getUrlsForRange(1, posts.lastPage))
+              <a href="{{anchor.url}}" aria-current="page" class="z-10 bg-indigo-50 border-indigo-500 text-indigo-600 relative inline-flex items-center px-4 py-2 border text-sm font-medium"> 
+                {{anchor.page }}
+              </a>              
+            @end
+        
+        </nav>
+      </div>
+    </div>
+  </div>
+  
