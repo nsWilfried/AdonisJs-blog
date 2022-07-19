@@ -29,8 +29,10 @@ Route.group(() => {
 Route.get('/', "BlogController.index").as('home')
 Route.get("/api", "BlogController.loadPosts").as("api")
 Route.get('/user/register', 'AuthController.goRegister').as('register')
-Route.post('/user/register', 'AuthController.register')
 Route.get('/contact', 'ContactController.index').as('contact')
 Route.get('/user/login', 'AuthController.goLogin').as('login')
 Route.get('/create/post', 'BlogController.createPostPage').as('createPost')
 
+//POST ROUTES 
+Route.post('/user/register', 'AuthController.register')
+Route.post('/logout', 'AuthController.logOut')

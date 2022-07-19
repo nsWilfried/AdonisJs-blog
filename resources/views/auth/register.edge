@@ -3,6 +3,18 @@
 @section('body')
 <div>
 
+    @!component('components/flash', {
+        name: 'username'
+    })
+    
+    @!component('components/flash', {
+        name: 'password'
+    })
+      
+    @!component('components/flash', {
+        name: 'email'
+    })
+      
     <form action="" method="post">
         @!component('components/form', {
             name: "Nom d'utilisateur:", 

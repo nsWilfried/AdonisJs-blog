@@ -1,7 +1,9 @@
 @layout('layout/layout')
 
 @section('body')
-
+@!component('components/navbar', {
+    auth: auth
+})
 
 <div class="w-full flex h-auto  justify-center">
     <div class=" w-2/4 h-full ">

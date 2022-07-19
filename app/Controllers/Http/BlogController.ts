@@ -1,5 +1,4 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import Database from '@ioc:Adonis/Lucid/Database'
 import Post from 'App/Models/Post'
 import moment from 'moment'
 import Application from '@ioc:Adonis/Core/Application'
@@ -8,13 +7,17 @@ import User from 'App/Models/User'
 
 export default class BlogController {
 
-    public async index({view, request}: HttpContextContract ) {
+    public async index({view, request, auth}: HttpContextContract ) {
         const page = request.input('page', 1)
         const limit = 1
-        const posts = await Post.query().preload("user").paginate(page,limit)
-
+        const userCookie = request.cookie('user_info')
         const postsCreatedDates: any = []
         let i =0
+        let user;
+
+        const posts = await Post.query().preload("user").paginate(page,limit)
+
+
         posts.forEach(post =>{
             i++
             if(post.createdAt)
@@ -23,10 +26,17 @@ export default class BlogController {
                     date:moment(post.createdAt).fromNow()
                 })
         })
+     
+        if(userCookie != undefined){
+             user = userCookie
+        } else {
+            user = null 
+        }
 
         return view.render("blog/index", {
             posts: posts , 
-            dates:postsCreatedDates   
+            dates:postsCreatedDates, 
+            auth:  user
         })
     }
 
@@ -58,7 +68,7 @@ export default class BlogController {
         const payload = await request.validate(UpdateValidator)
 
        await  post.merge(payload)
-         await post.save()
+        await post.save()
 
 
        if(post.thumbnail != null){
