@@ -1,9 +1,11 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
+import LoginValidator from 'App/Validators/LoginValidator'
 import RegisterValidator from 'App/Validators/RegisterValidator'
 export default class AuthController {
 
 
+    // register
     public async goRegister({view, request, response}: HttpContextContract){
         return view.render('auth/register')
     }
@@ -41,9 +43,40 @@ export default class AuthController {
         response.clearCookie('user_info')
         response.redirect().toPath('/user/login')
     }
+
+    //login
     public async goLogin({view}: HttpContextContract){
 
         return view.render('auth/login')
     }
-   
+     
+    public async login({request, auth, session, response}: HttpContextContract)
+   {
+       const email = request.input('email')
+       const password = request.input('password')
+       let user = null
+
+       const payload = await request.validate(LoginValidator)
+        try {
+            await   auth.use('web').attempt(email, password).then(data => {
+                const info = data.$original
+                user = {
+                    id: info.id, 
+                    username: info.username, 
+                    email: info.email
+                }
+            })
+        } catch(error){
+
+            const errorCode = error.responseText.split(':')[0]
+            if(errorCode == 'E_INVALID_AUTH_UID' ){
+                session.flash("errors.uid", "Cet utilisateur n'existe pas")
+            } else if (errorCode  == 'E_INVALID_AUTH_PASSWORD'){
+                session.flash('errors.password', "Mot de passe incorrect")
+            }
+            return response.redirect().toPath('/user/login')
+        }
+        response.cookie('user_info', user)
+       return  response.redirect().toPath('/')
+   }
 }

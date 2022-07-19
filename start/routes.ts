@@ -36,3 +36,4 @@ Route.get('/create/post', 'BlogController.createPostPage').as('createPost')
 //POST ROUTES 
 Route.post('/user/register', 'AuthController.register')
 Route.post('/logout', 'AuthController.logOut')
+Route.post('/user/login',  'AuthController.login')

@@ -2,8 +2,40 @@
 
 @section('body')
   <div class="w-full h-screen flex justify-center items-center">
-      <span class="text-white">
-          hello i am login page
-      </span>
+    <div>
+      
+      @!component('components/flash', {
+          name: 'password'
+      })
+        
+      @!component('components/flash', {
+          name: 'email'
+      })
+       @!component('components/flash', {
+        name: 'uid'
+    })
+
+        
+      <form action="/user/login" method="post">
+          @!component('components/form', {
+              name: "Email:", 
+              title: 'email', 
+              type: 'input', 
+              value:''
+          })
+      
+          @!component('components/form', {
+          name: "Mot de passe:", 
+          title: 'password', 
+          type: 'password'
+          })
+      <div>
+          <button type="submit">
+              Se connecter
+          </button>
+      </div>
+      </form>
+        
+      </div>
   </div>
 @end

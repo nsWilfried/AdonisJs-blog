@@ -1,7 +1,7 @@
-import { schema, rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class RegisterValidator {
+export default class LoginValidator {
   constructor(protected ctx: HttpContextContract) {}
 
   /*
@@ -24,12 +24,8 @@ export default class RegisterValidator {
    *    ```
    */
   public schema = schema.create({
-    username: schema.string({trim: true}, [rules.required(), rules.unique({table: 'users', column: 'username'})]), 
-    email: schema.string({trim: true}, [rules.required(), rules.email(), rules.unique({table: 'users', column: 'email'})]), 
-    password: schema.string({trim: true}, [rules.required(), rules.minLength(6)]), 
-    rememberMeToken: schema.string.nullableAndOptional()
-
-
+    email: schema.string({trim: true}, [rules.email(), rules.required()]),  
+    password: schema.string({trim:true}, [rules.required(), rules.minLength(6)])
   })
 
   /**
@@ -44,11 +40,9 @@ export default class RegisterValidator {
    *
    */
   public messages: CustomMessages = {
-    'username.required': "Nom d'utilisateur requis", 
-    'username.unique': "Ce nom d'utilisateur est déjà utilisé", 
-    'email.required': "Email requis", 
-    'email.unique': "Email déjà présent", 
-    'password.required': "Mot de passe requis", 
-    "password.length": "Mot de passe de trop court ( doit comporter au moins 6 caractères )"
+    'email.required': 'Email requis', 
+    'password.required': 'Mot de passe trop court requis', 
+    'password.length': 'Mot de passe  trop court', 
+    'email.*': "Email invalide"
   }
 }
