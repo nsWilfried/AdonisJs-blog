@@ -27,7 +27,7 @@ export default class BlogController {
                 })
         })
      
-        if(userCookie != undefined){
+        if(userCookie != undefined &&  userCookie != null ){
              user = userCookie
         } else {
             user = null 

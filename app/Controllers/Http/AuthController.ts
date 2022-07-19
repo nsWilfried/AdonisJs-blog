@@ -10,19 +10,35 @@ export default class AuthController {
 
     public async register({request, response, auth}: HttpContextContract){
 
+        // retrieve all user inputs
         const username = request.input('username')
         const password = request.input('password')
         const email = request.input('email')
+        const rememberMeToken = request.input('remember')
+        const remember = false ? rememberMeToken == undefined : true
 
+        // validate all users input data
         const payload = await request.validate(RegisterValidator)
         const user = await User.create(payload)
-        await auth.login(user)
-        response.cookie("user_info", user)
+
+        //login user
+        await auth.use('web').attempt(email,password, remember)
+
+        // save user info in cookie
+        if(remember == false)
+        {
+            response.cookie("user_info", user)
+        }else {
+            response.cookie("user_info", user, {
+                maxAge: '1y'
+            })
+        }
         response.redirect().toPath('/')
     }
 
-    public async logOut({view, auth, response}:HttpContextContract){
+    public async logOut({ auth, request, response}:HttpContextContract){
         await auth.use('web').logout()
+        response.clearCookie('user_info')
         response.redirect().toPath('/user/login')
     }
     public async goLogin({view}: HttpContextContract){
