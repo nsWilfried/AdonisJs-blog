@@ -45,8 +45,7 @@ export default class AuthController {
     }
 
     //login
-    public async goLogin({view}: HttpContextContract){
-
+    public async goLogin({view, params, session, request}: HttpContextContract){
         return view.render('auth/login')
     }
      
@@ -54,11 +53,11 @@ export default class AuthController {
    {
        const email = request.input('email')
        const password = request.input('password')
-       let user = null
+       let user;
 
        const payload = await request.validate(LoginValidator)
         try {
-            await   auth.use('web').attempt(email, password).then(data => {
+            await   auth.use('web').attempt(email, password, true).then(data => {
                 const info = data.$original
                 user = {
                     id: info.id, 

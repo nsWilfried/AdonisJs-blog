@@ -27,6 +27,11 @@
         <div>
             <input type="file" name="{{title}}" id="{{title}}">
         </div>
+    @elseif (type=='textarea')
+        <div>
+            <textarea name="{{title}}" id="{{title}}" cols="30" rows="10"></textarea>
+        </div>
+    
     @end
 
 </div>

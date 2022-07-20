@@ -18,6 +18,9 @@ export default class Post extends BaseModel {
   @column()
   public thumbnail?:string 
 
+  @column()
+  public  content: string
+
   @belongsTo(() => User)
   public user: BelongsTo<typeof User>
 

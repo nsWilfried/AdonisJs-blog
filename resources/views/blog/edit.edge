@@ -2,8 +2,45 @@
 
 @section('body')
   <div class="w-full h-screen flex justify-center items-center">
-    <span class="text-white">
-        Edit page
-    </span>
+    <div class="h-full bg-white w-1/3 ">
+
+      <form action="/create/post" method="post" enctype="application/x-www-form-urlencoded">
+        @!component('components/form', {
+          name: "Nom du post:", 
+          title: 'title', 
+          type: 'input', 
+          value:""
+      })
+       @!component('components/form', {
+        name: "Description:", 
+        title: 'description', 
+        type: 'textarea', 
+        value:''
+    })
+
+      @!component('components/form', {
+        name: "Poster:", 
+        title: 'cover_image', 
+        type: 'file', 
+        value:''
+      })
+      <div>
+        <label for="content">Contenu:</label>
+        <textarea name="content" id="" class="w-full" cols="30"></textarea>
+
+      </div>
+
+      
+      <button class="bg-blue-400 text-white font-bold px-2 p-3 my-3 rounded" type="submit">
+        Créer le post
+      </button>
+    </form>
+      
+    </div>
   </div>
+
+    <script src="https://cdn.ckeditor.com/4.19.1/standard/ckeditor.js"></script>
+    <script>
+        CKEDITOR.replace('content')
+    </script>
 @endsection

@@ -24,6 +24,7 @@ Route.get("/posts/:id", "BlogController.getOnePost").as("show_post")
 
 Route.group(() => {
     Route.post("/posts/update/:id", "BlogController.update")
+    Route.get('/create/post', 'BlogController.createPostPage').as('createPost')
 
 }).middleware('auth')
 Route.get('/', "BlogController.index").as('home')
@@ -31,9 +32,9 @@ Route.get("/api", "BlogController.loadPosts").as("api")
 Route.get('/user/register', 'AuthController.goRegister').as('register')
 Route.get('/contact', 'ContactController.index').as('contact')
 Route.get('/user/login', 'AuthController.goLogin').as('login')
-Route.get('/create/post', 'BlogController.createPostPage').as('createPost')
 
 //POST ROUTES 
 Route.post('/user/register', 'AuthController.register')
 Route.post('/logout', 'AuthController.logOut')
 Route.post('/user/login',  'AuthController.login')
+Route.post('/create/post',  'BlogController.createPost')

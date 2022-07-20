@@ -11,8 +11,13 @@
             @each(post in posts)
             <div class="post h-auto m-3 text-white flex md:flex-row sm:flex-col">
 
-                <div class="post__thumbnail p-3 w-auto h-auto flex justify-center items-center">
-                    <img style="width:300px;" src=" {{post.thumbnail}} " alt=" {{post.title}} " srcset="">
+                <div class="post__thumbnail p-3 w-auto h-auto flex justify-center items-center overflow-hidden ">
+                    @if(post.thumbnail != null)
+                        <img style="width:300px;" src="/uploads/{{post.thumbnail}}" alt=" {{post.title}} " srcset="">
+                   
+                    @else 
+                        <div class="bg-gray-400  flex" style="height:400px; width:300px"></div>
+                     @endif
                 </div>
 
                 <div class="post__info p-3  w-2/4">

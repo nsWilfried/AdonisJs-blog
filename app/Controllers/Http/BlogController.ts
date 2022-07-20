@@ -9,13 +9,14 @@ export default class BlogController {
 
     public async index({view, request, auth}: HttpContextContract ) {
         const page = request.input('page', 1)
-        const limit = 1
+        const limit = 3
         const userCookie = request.cookie('user_info')
         let postsCreatedDates: any = []
         let user;
 
         const posts = await Post.query().preload("user").paginate(page, limit)
 
+    
         posts.forEach(post =>{
             if(post.$original.createdAt.ts != null)
                 postsCreatedDates.push({
@@ -49,8 +50,39 @@ export default class BlogController {
         const post = await Post.findOrFail(params.id)
         return view.render('blog/post', {post})
     }
+
     public async createPostPage({view}:HttpContextContract){
         return view.render('blog/edit')
+    }
+
+    public getInputs(request){
+        const title = request.input('title')
+        const description = request.input('description')
+        const thumbnail = request.file('cover_image') 
+        const content  = request.input('content')
+        const user_id = request.cookie('user_info').id
+        return {title, description, thumbnail, content, user_id}
+    }
+
+    public async createPost({request, response}:HttpContextContract){
+         
+        const  inputs = this.getInputs(request)
+         
+         await Post.create({
+            title: inputs.title, 
+            description: inputs.description, 
+            thumbnail:  inputs.thumbnail?.clientName, 
+            content: inputs.content,  
+            userId: inputs.user_id
+         })
+
+         if (inputs.thumbnail) {
+            await inputs.thumbnail.move(Application.tmpPath('uploads'))
+          }
+
+          response.redirect().toPath('/')
+
+        
     }
     public async showPost({params, view}:HttpContextContract){
         const post = await Post.findOrFail(params.id)
@@ -59,17 +91,21 @@ export default class BlogController {
     }
 
     public async update({request, response, params}){
+
         const post = await Post.findOrFail(params.id)
-        const cover_image = request.file('cover_image')
-    
+        const inputs = this.getInputs(request)
         const payload = await request.validate(UpdateValidator)
 
-       await  post.merge(payload)
+       await  post.merge({
+           title: inputs.title, 
+           description: inputs.description, 
+           thumbnail: inputs.thumbnail.clientName
+       })
         await post.save()
 
 
-       if(post.thumbnail != null){
-        await cover_image.move(Application.tmpPath('uploads'))
+       if(inputs.thumbnail != null){
+        await inputs.thumbnail.move(Application.tmpPath('uploads'))
     }
         return response.redirect().toRoute("home")
     }

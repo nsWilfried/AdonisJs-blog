@@ -2,8 +2,24 @@
 
 @section('body')
   <div class="w-full h-screen flex justify-center items-center">
-    <span class="font-bold text-2xl text-white">
-        {{post.title}}
-    </span>
+    <div class="h-full w-2/6 ">
+      <div>
+        <span class="font-bold text-2xl text-white">
+          {{post.title}}
+      </span>
+      </div>
+
+      <div>
+          <div>
+            <code>
+              {{post.content}}
+
+            </code>
+
+          </div>
+      </div>
+      
+    </div>
+    
   </div>
 @end
