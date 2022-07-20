@@ -11,19 +11,16 @@ export default class BlogController {
         const page = request.input('page', 1)
         const limit = 1
         const userCookie = request.cookie('user_info')
-        const postsCreatedDates: any = []
-        let i =0
+        let postsCreatedDates: any = []
         let user;
 
-        const posts = await Post.query().preload("user").paginate(page,limit)
-
+        const posts = await Post.query().preload("user").paginate(page, limit)
 
         posts.forEach(post =>{
-            i++
-            if(post.createdAt)
+            if(post.$original.createdAt.ts != null)
                 postsCreatedDates.push({
-                    index: i,
-                    date:moment(post.createdAt).fromNow()
+                    index: post.id,
+                    date:moment(post.$original.createdAt.ts).fromNow()
                 })
         })
      
