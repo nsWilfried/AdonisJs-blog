@@ -1,10 +1,10 @@
-import { schema,rules, CustomMessages } from '@ioc:Adonis/Core/Validator'
+import { schema, CustomMessages, rules } from '@ioc:Adonis/Core/Validator'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 
-export default class UpdateValidator {
+export default class CreatePostValidator {
   constructor(protected ctx: HttpContextContract) {}
 
-  /* 
+  /*
    * Define schema to validate the "shape", "type", "formatting" and "integrity" of data.
    *
    * For example:
@@ -15,18 +15,19 @@ export default class UpdateValidator {
    *    ```
    *
    * 2. The email must be of data type string, formatted as a valid
-   *    email. But also, not used by any other user. 
+   *    email. But also, not used by any other user.
    *    ```
    *     schema.string({}, [
    *       rules.email(),
    *       rules.unique({ table: 'users', column: 'email' }),
-   *     ]) 
+   *     ])
    *    ```
    */
   public schema = schema.create({
-    title: schema.string({trim:true}, [rules.required()]), 
-    description: schema.string({trim: true}, [rules.required()]), 
-    thumbnail: schema.string.nullableAndOptional({trim: true})
+    title: schema.string({trim:true}, [rules.required()]),
+    description: schema.string({trim:true}, [rules.required()]), 
+    thumbnail: schema.string.nullableAndOptional(),
+    content: schema.string({trim: true}, [rules.required()])
   })
 
   /**
@@ -41,6 +42,6 @@ export default class UpdateValidator {
    *
    */
   public messages: CustomMessages = {
-    required: 'le champ {{field}} est requis'
+    required : 'le champ {{field}}  est requis'
   }
 }

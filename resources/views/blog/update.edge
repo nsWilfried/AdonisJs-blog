@@ -8,10 +8,21 @@
     <div class="post__thumbnail w-full h-64 flex justify-center items-center bg-orange-200">
         @if(post.thumbnail != null)
           <div class=" w-28 h-28  hover:cursor-pointer">
-            <img class="hover:border-slate-400 transition duration-300 hover:border-4" src="{{post.thumbnail}}" alt="{{post.title}}">
+            <img class="hover:border-slate-400 transition duration-300 hover:border-4" src="/uploads/{{post.thumbnail}}" alt="{{post.title}}">
           </div>
       @endif
     </div>
+
+    @!component('components/flash', {
+      name: 'title'
+    })
+    @!component('components/flash', {
+      name: 'description'
+    })
+    @!component('components/flash', {
+      name: 'content'
+    })
+      
     
     <form action="" method="post" enctype="multipart/form-data">
       @!component('components/form', {
@@ -20,9 +31,7 @@
         title: 'title', 
         type: 'input'
     })
-    @!component('components/flash', {
-      name: 'title'
-    })
+  
       @!component('components/form', {
         name: 'Descrition du post', 
         value: post.description, 
@@ -30,10 +39,15 @@
         type: 'textarea'
       })
 
+      @if(post.thumbnail != null)
+        <span>
+          Nom du fichier: {{post.thumbnail}}
+        </span>
+      @endif
       @!component('components/form', {
         name: 'Choisir une image', 
         title: 'cover_image', 
-        type: 'file'
+        type: 'file', 
       })
 
       <div>

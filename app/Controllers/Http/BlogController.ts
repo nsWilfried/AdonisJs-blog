@@ -4,6 +4,7 @@ import moment from 'moment'
 import Application from '@ioc:Adonis/Core/Application'
 import UpdateValidator from 'App/Validators/UpdateValidator'
 import User from 'App/Models/User'
+import CreatePostValidator from 'App/Validators/CreatePostValidator'
 
 export default class BlogController {
 
@@ -68,6 +69,7 @@ export default class BlogController {
          
         const  inputs = this.getInputs(request)
          
+        const payload = await request.validate(CreatePostValidator)
          await Post.create({
             title: inputs.title, 
             description: inputs.description, 
