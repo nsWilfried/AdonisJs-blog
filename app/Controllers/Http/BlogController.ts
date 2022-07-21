@@ -5,10 +5,11 @@ import Application from '@ioc:Adonis/Core/Application'
 import UpdateValidator from 'App/Validators/UpdateValidator'
 import User from 'App/Models/User'
 import CreatePostValidator from 'App/Validators/CreatePostValidator'
+moment.locale('fr')
 
 export default class BlogController {
 
-    public async index({view, request, auth}: HttpContextContract ) {
+    public async index({view, request}: HttpContextContract ) {
         const page = request.input('page', 1)
         const limit = 3
         const userCookie = request.cookie('user_info')
@@ -86,15 +87,22 @@ export default class BlogController {
 
         
     }
-    public async showPost({params, view}:HttpContextContract){
+    public async showPost({params, view, bouncer, response, session, request}:HttpContextContract){
         const post = await Post.findOrFail(params.id)
+        const authorization = await bouncer.with('UpdatePostPolicy').allows('view', post, request)
+        if(authorization){
+            return view.render("blog/update", {post})
 
-        return view.render("blog/update", {post})
+        } else {
+            session.flash('unauthorized', "Vous n'êtes pas autorisé à accéder à cette ressource")
+            response.redirect().toPath('/')
+        }
     }
 
-    public async update({request, response, params}){
+    public async update({request, response, params}:HttpContextContract){
 
         const post = await Post.findOrFail(params.id)
+        
         const inputs = this.getInputs(request)
         const payload = await request.validate(UpdateValidator)
 

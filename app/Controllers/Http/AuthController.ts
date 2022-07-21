@@ -6,10 +6,17 @@ export default class AuthController {
 
 
     // register
-    public async goRegister({view, request, response}: HttpContextContract){
-        return view.render('auth/register')
+    public async goRegister({view, request, response, bouncer, session}: HttpContextContract){
+        if(await this.authorizeAuthentication(bouncer, request)){
+            return view.render('auth/register')
+       }
+       else {
+           session.flash("unauthorized", 'Accès refusé: vous êtes déjà connecté')
+           response.redirect().toPath('/')
+       }
     }
 
+    // go to register page
     public async register({request, response, auth}: HttpContextContract){
 
         // retrieve all user inputs
@@ -38,44 +45,62 @@ export default class AuthController {
         response.redirect().toPath('/')
     }
 
-    public async logOut({ auth, request, response}:HttpContextContract){
+    // log out
+    public async logOut({ auth, response}:HttpContextContract){
         await auth.use('web').logout()
         response.clearCookie('user_info')
         response.redirect().toPath('/user/login')
     }
 
     //login
-    public async goLogin({view, params, session, request}: HttpContextContract){
-        return view.render('auth/login')
+    public async goLogin({view, session, request, response, bouncer}: HttpContextContract){
+        if(await this.authorizeAuthentication(bouncer, request)){
+             return view.render('auth/login')
+        }
+        else {
+            session.flash("unauthorized", 'Accès refusé: vous êtes déjà connecté')
+            response.redirect().toPath('/')
+        }
     }
      
+    //login
     public async login({request, auth, session, response}: HttpContextContract)
    {
-       const email = request.input('email')
-       const password = request.input('password')
-       let user;
-
-       const payload = await request.validate(LoginValidator)
-        try {
-            await   auth.use('web').attempt(email, password, true).then(data => {
-                const info = data.$original
-                user = {
-                    id: info.id, 
-                    username: info.username, 
-                    email: info.email
+ 
+            const email = request.input('email')
+            const password = request.input('password')
+            let user;
+    
+            const payload = await request.validate(LoginValidator)
+            try {
+                await   auth.use('web').attempt(email, password, true).then(data => {
+                    const info = data.$original
+                    user = {
+                        id: info.id, 
+                        username: info.username, 
+                        email: info.email
+                    }
+                })
+            } catch(error){
+    
+                const errorCode = error.responseText.split(':')[0]
+                if(errorCode == 'E_INVALID_AUTH_UID' ){
+                    session.flash("errors.uid", "Cet utilisateur n'existe pas")
+                } else if (errorCode  == 'E_INVALID_AUTH_PASSWORD'){
+                    session.flash('errors.password', "Mot de passe incorrect")
                 }
-            })
-        } catch(error){
-
-            const errorCode = error.responseText.split(':')[0]
-            if(errorCode == 'E_INVALID_AUTH_UID' ){
-                session.flash("errors.uid", "Cet utilisateur n'existe pas")
-            } else if (errorCode  == 'E_INVALID_AUTH_PASSWORD'){
-                session.flash('errors.password', "Mot de passe incorrect")
+                return response.redirect().toPath('/user/login')
             }
-            return response.redirect().toPath('/user/login')
-        }
-        response.cookie('user_info', user)
-       return  response.redirect().toPath('/')
+            response.cookie('user_info', user)
+            return  response.redirect().toPath('/')
+     
+      
    }
-}
+
+    // get authorization to go to an auth page
+    public async authorizeAuthentication(bouncer, request){
+        const authorization  = await bouncer.with('AuthPolicy').allows('view',  request)
+        return authorization
+    }
+} 
+

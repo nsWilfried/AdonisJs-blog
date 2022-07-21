@@ -1,7 +1,15 @@
 @if(flashMessages.has(`errors.${name}`))
-<div class="bg-red-400 text-white p-3 " style="width:300px">
+<div class="bg-red-400 text-white p-3  w-auto text-center">
     <span class="">
         {{flashMessages.get(`errors.${name}[0]`)}}
+    </span>
+</div>
+@endif
+
+@if(flashMessages.has(`${error}`))
+<div class="bg-red-400 text-white p-3 ">
+    <span class="">
+        {{flashMessages.get(`${error}`)}}
     </span>
 </div>
 @endif
